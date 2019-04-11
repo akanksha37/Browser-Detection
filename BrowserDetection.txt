@@ -1,0 +1,129 @@
+<html>
+
+<head>
+    <title>Browser Detection</Title>
+    <style>
+        .parent {
+            background-color: #cce6ff;
+        }
+        p{
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="parent">
+        <p id="demo0"></p>
+        <p id="demo1"></p>
+        <p id="demo2"></p>
+    </div>
+    <Script Language="JavaScript">
+        // Opera 8.0+
+        var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+        // Firefox 1.0+
+        var isFirefox = typeof InstallTrigger !== 'undefined';
+
+        // Safari 3.0+ "[object HTMLElementConstructor]" 
+        var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) {
+            return p.toString() === "[object SafariRemoteNotification]";
+        })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+
+        // Internet Explorer 6-11
+        var isIE = /*@cc_on!@*/ false || !!document.documentMode;
+
+        // Edge 20+
+        var isEdge = !isIE && !!window.StyleMedia;
+
+        // Chrome 1 - 71
+        var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+
+        // Blink engine detection
+        var isBlink = (isChrome || isOpera) && !!window.CSS;
+
+        var output = 'Detecting browsers by ducktyping:<hr>';
+        output += 'isFirefox: ' + isFirefox + '<br>';
+        output += 'isChrome: ' + isChrome + '<br>';
+        output += 'isSafari: ' + isSafari + '<br>';
+        output += 'isOpera: ' + isOpera + '<br>';
+        output += 'isIE: ' + isIE + '<br>';
+        output += 'isEdge: ' + isEdge + '<br>';
+        output += 'isBlink: ' + isBlink + '<br>';
+
+        var objappVersion = navigator.appVersion;
+        var objAgent = navigator.userAgent;
+        var objbrowserName = navigator.appName;
+        var objfullVersion = '' + parseFloat(navigator.appVersion);
+        var objBrMajorVersion = parseInt(navigator.appVersion, 10);
+        var objOffsetName, objOffsetVersion, ix;
+
+        // In Chrome 
+        if ((objOffsetVersion = objAgent.indexOf("Chrome")) != -1) {
+            objbrowserName = "Chrome";
+            objfullVersion = objAgent.substring(objOffsetVersion + 7);
+        }
+
+        var bName;
+        if (isFirefox) {
+            bName = "FireFox";
+        } else if (isIE) {
+            bName = "Internet Explorer";
+        } else if (isEdge) {
+            bName = "Edge";
+        } else if (isOpera) {
+            bName = "Opera";
+        } else if (isSafari) {
+            bName = "Safari";
+        } else if (bName == undefined) {
+            bName = "Chrome"
+        }
+        document.getElementById("demo0").innerHTML = "Browser Name: "+bName;
+        var OSName = "Unknown OS";
+        if (navigator.appVersion.indexOf("Win") != -1) OSName = "Windows";
+        if (navigator.appVersion.indexOf("Mac") != -1) OSName = "MacOS";
+        if (navigator.appVersion.indexOf("X11") != -1) OSName = "UNIX";
+        if (navigator.appVersion.indexOf("Linux") != -1) OSName = "Linux";
+
+        document.getElementById("demo2").innerHTML = "OS: " + OSName;
+
+        // In Microsoft internet explorer
+        if ((objOffsetVersion = objAgent.indexOf("MSIE")) != -1) {
+            objbrowserName = "Microsoft Internet Explorer";
+            objfullVersion = objAgent.substring(objOffsetVersion + 5);
+        }
+        // In Firefox 
+        else if ((objOffsetVersion = objAgent.indexOf("Firefox")) != -1) {
+            objbrowserName = "Firefox";
+        }
+        // In Safari 
+        else if ((objOffsetVersion = objAgent.indexOf("Safari")) != -1) {
+            objbrowserName = "Safari";
+            objfullVersion = objAgent.substring(objOffsetVersion + 7);
+            if ((objOffsetVersion = objAgent.indexOf("Version")) != -1) objfullVersion = objAgent.substring(
+                objOffsetVersion + 8);
+        }
+        // For other browser "name/version" is at the end of userAgent
+        else if ((objOffsetName = objAgent.lastIndexOf(' ') + 1) < (objOffsetVersion = objAgent.lastIndexOf('/'))) {
+            objbrowserName = objAgent.substring(objOffsetName, objOffsetVersion);
+            objfullVersion = objAgent.substring(objOffsetVersion + 1);
+            if (objbrowserName.toLowerCase() == objbrowserName.toUpperCase()) {
+                objbrowserName = navigator.appName;
+            }
+        }
+        // trimming the fullVersion string at semicolon/space if present 
+        if ((ix = objfullVersion.indexOf(";")) != -1) objfullVersion = objfullVersion.substring(0, ix);
+        if ((ix = objfullVersion.indexOf(" ")) != -1) objfullVersion = objfullVersion.substring(0, ix);
+        objBrMajorVersion = parseInt('' + objfullVersion, 10);
+        if (isNaN(objBrMajorVersion)) {
+            objfullVersion = '' + parseFloat(navigator.appVersion);
+            objBrMajorVersion = parseInt(navigator.appVersion, 10);
+        }
+        document.getElementById("demo1").innerHTML = "Full version = " + objfullVersion + "<br>" +
+            "Major version = " + objBrMajorVersion + "<br>" + "Navigator.appName = " + navigator.appName + "<br>" +
+            "Navigator.userAgent = " + navigator.userAgent + "<br>";
+    </script>
+</body>
+
+</html>
